@@ -1,23 +1,54 @@
 import * as tf from '@tensorflow/tfjs';
+import { windowReady } from "./ui";
 
-console.log(`Current version ${tf.version.tfjs}`);
+import { buildSequentialModel } from "./model";
 
-// Define a model for linear regression.
-const model = tf.sequential();
-model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+export function printInfo() {
+    console.log(`Current version ${tf.version.tfjs}`);
+}
 
-model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' });
+let current_model = [
+    tf.layers.conv2d({ inputShape: [100, 100, 3], filters: 12, kernelSize: 1, activation: "relu" }),
+    tf.layers.conv2d({ filters: 12, kernelSize: 1, activation: "relu" }),
+    tf.layers.conv2d({ filters: 12, kernelSize: 1, activation: "softmax" })
+]
 
-// Generate some synthetic data for training.
-const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
-const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
+class Table {
 
-// Train the model using the data.
-model.fit(xs, ys, { epochs: 10 }).then(() => {
-    // Use the model to do inference on a data point the model hasn't seen before:
-    const res = model.predict(tf.tensor2d([5], [1, 1]));
-    console.log(res)
+    private element: HTMLTableElement = document.createElement("table");
 
-    // Open the browser devtools to see the output
-});
+    constructor(rows: number, cols: number, titles: string[], data: string[]) {
+        const header = this.element.createTHead();
+        header.insertRow();
+        for (let i = 0; i < cols; i++) {
+            header.rows[0].insertCell();
+            header.rows[0].cells[i].innerText = titles[i];
+        }
+        const body = this.element.createTBody();
+        for (let i = 0; i < rows; i++) {
+            body.insertRow();
+            for (let j = 0; j < cols; j++) {
+                body.rows[i].insertCell();
+                body.rows[i].cells[j].innerText = data[(i * cols) + j];
+            }
+        }
+    }
+    getElement() { return this.element; }
+
+}
+
+async function main() {
+
+    await windowReady();
+
+    const app = document.getElementById("app");
+
+    const summary_table = new Table(2, 3, ["Layer", "Input Size", "w"], ["hi", "2", "2", "1", "2", "w"]);
+
+    app.append(summary_table.getElement());
+
+
+}
+
+main();
 
