@@ -4,7 +4,7 @@ import * as tfjs from "@tensorflow/tfjs-vis";
 import { h, FunctionalComponent } from "preact";
 import { useState } from "preact/hooks";
 
-import { buildSequentialModel } from "./model";
+import { buildSequentialModel, getDefaultModelLayers } from "./model";
 
 interface DenseBuilderProps {
     onAddLayer: (units: number) => void;
@@ -15,7 +15,7 @@ export const DenseBuilder: FunctionalComponent<DenseBuilderProps> = (props) => {
     const [selectedUnits, setSelectedUnits] = useState(64);
 
     const onSubmit = () => {
-        props.onAddLayer(selectedUnits);
+        props.onAddLayer(parseInt(selectedUnits));
     }
 
     const onChangeUnits = (event) => {
@@ -27,8 +27,8 @@ export const DenseBuilder: FunctionalComponent<DenseBuilderProps> = (props) => {
         <div>
             <h3>Dense </h3>
 
-            <label htmlFor="units">Number of units</label>
-            <input id="units" onChange={onChangeUnits} value={selectedUnits} type="number" />
+            <label htmlFor="units">Number of units: </label>
+            <input id="units" onChange={onChangeUnits} value={selectedUnits} min="1" type="number" />
 
             <br />
 
@@ -47,7 +47,7 @@ export const Conv2dBuilder: FunctionalComponent<Conv2dBuilderProps> = (props) =>
     const [selectedKernelSize, setSelectedKernelSize] = useState(3);
 
     const onSubmit = () => {
-        props.onAddLayer(selectedFilters, selectedKernelSize);
+        props.onAddLayer(parseInt(selectedFilters), parseInt(selectedKernelSize));
     }
 
     const onChangeFilters = (event) => {
@@ -62,13 +62,13 @@ export const Conv2dBuilder: FunctionalComponent<Conv2dBuilderProps> = (props) =>
         <div>
             <h3>Convolution2D </h3>
 
-            <label htmlFor="filters">Number of filters</label>
-            <input id="filters" onChange={onChangeFilters} value={selectedFilters} type="number" />
+            <label htmlFor="filters">Number of filters: </label>
+            <input id="filters" onChange={onChangeFilters} value={selectedFilters} min="1" type="number" />
 
             <br />
 
-            <label htmlFor="kernel">Number of filters</label>
-            <input id="kernel" onChange={onChangeKernelSize} value={selectedKernelSize} type="number" />
+            <label htmlFor="kernel">Kernel size: </label>
+            <input id="kernel" onChange={onChangeKernelSize} value={selectedKernelSize} min="1" type="number" />
 
             <br />
 
@@ -96,8 +96,8 @@ export const MaxPoolingBuilder: FunctionalComponent<MaxPoolingBuilderProps> = (p
     return (
         <div>
             <h3>MaxPooling2D</h3>
-            <label htmlFor="size">Number of filters</label>
-            <input id="size" onChange={onChangeSize} value={selectedSize} type="number" />
+            <label htmlFor="size">Pooling size: </label>
+            <input id="size" onChange={onChangeSize} value={selectedSize} min="1" type="number" />
 
             <br />
 
@@ -106,16 +106,13 @@ export const MaxPoolingBuilder: FunctionalComponent<MaxPoolingBuilderProps> = (p
     )
 }
 
-interface NetworkConfiguration {
-
-
-}
-
 export interface NetworkBuilderProps {
-    onSubmitNetwork: (config: NetworkConfiguration) => void;
+    onSubmitNetwork: (model: tf.Sequential) => void;
 }
 
-export const NetworkBuilder: FunctionalComponent = (props) => {
+export const NetworkBuilder: FunctionalComponent<NetworkBuilderProps> = (props) => {
+
+    const onSubmitNetwork = props.onSubmitNetwork;
 
     const [model, setModel] = useState([]);
 
@@ -150,7 +147,6 @@ export const NetworkBuilder: FunctionalComponent = (props) => {
         if (last_layer.constructor.name == "Dense") {
             setModel([...model, tf.layers.dense({ units: units })]);
         } else {
-
             setModel([...model, tf.layers.flatten(), tf.layers.dense({ units: units })]);
         }
     }
@@ -166,8 +162,12 @@ export const NetworkBuilder: FunctionalComponent = (props) => {
             return
         }
         const seq = buildSequentialModel(model);
-
         tfjs.show.modelSummary({ name: "Model Summary", tab: "Model Inspection" }, seq);
+        onSubmitNetwork(seq);
+    }
+
+    const loadDefaultNetwork = () => {
+        setModel(getDefaultModelLayers([100, 100, 1], 9));
     }
 
     return (
@@ -179,14 +179,20 @@ export const NetworkBuilder: FunctionalComponent = (props) => {
 
             <br />
 
+            <button onClick={loadDefaultNetwork}>Use Default Network</button>
+
+            <br />
+
             <p>Number of layers: {model.length}</p>
-            <button onClick={buildModel}>Compile Model</button>
+            <button onClick={buildModel}>Build Model</button>
             <button onClick={removeLastLayer}>Remove</button>
+
 
         </div>
     )
 
 }
+
 
 
 
