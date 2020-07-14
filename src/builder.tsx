@@ -162,7 +162,7 @@ export const NetworkBuilder: FunctionalComponent<NetworkBuilderProps> = (props) 
             return
         }
         const seq = buildSequentialModel(model);
-        tfjs.show.modelSummary({ name: "Model Summary", tab: "Model Inspection" }, seq);
+        tfjs.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
         onSubmitNetwork(seq);
     }
 
@@ -179,12 +179,12 @@ export const NetworkBuilder: FunctionalComponent<NetworkBuilderProps> = (props) 
 
             <br />
 
-            <button onClick={loadDefaultNetwork}>Use Default Network</button>
+            <button onClick={loadDefaultNetwork}>Use Default Architecture</button>
 
             <br />
 
             <p>Number of layers: {model.length}</p>
-            <button onClick={buildModel}>Build Model</button>
+            <button onClick={buildModel}>Confirm</button>
             <button onClick={removeLastLayer}>Remove</button>
 
 
