@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
-import * as tfjs from "@tensorflow/tfjs-vis";
+import * as tfvis from "@tensorflow/tfjs-vis";
 
-import { h, FunctionalComponent } from "preact";
+import { h } from "preact";
 import { useState } from "preact/hooks";
 
 import { buildSequentialModel, getDefaultModelLayers } from "./model";
@@ -15,7 +15,7 @@ export const DenseBuilder = (props: DenseBuilderProps) => {
     const [selectedUnits, setSelectedUnits] = useState(64);
 
     const onSubmit = () => {
-        props.onAddLayer(parseInt(selectedUnits));
+        props.onAddLayer(selectedUnits);
     }
 
     const onChangeUnits = (event) => {
@@ -47,7 +47,7 @@ export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
     const [selectedKernelSize, setSelectedKernelSize] = useState(3);
 
     const onSubmit = () => {
-        props.onAddLayer(parseInt(selectedFilters), parseInt(selectedKernelSize));
+        props.onAddLayer(selectedFilters, selectedKernelSize);
     }
 
     const onChangeFilters = (event) => {
@@ -162,7 +162,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return
         }
         const seq = buildSequentialModel(model);
-        tfjs.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
+        tfvis.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
         onSubmitNetwork(seq);
     }
 

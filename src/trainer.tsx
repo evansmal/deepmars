@@ -19,8 +19,8 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
     }
 
     const isTrainingDisabled = (model: tf.Sequential | null) => {
-        if (model !== null) return "";
-        else return "disabled";
+        if (model !== null) return false;
+        else return true;
     }
 
     const onSelectLearningRate = (event) => {
