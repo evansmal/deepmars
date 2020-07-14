@@ -10,7 +10,7 @@ interface DenseBuilderProps {
     onAddLayer: (units: number) => void;
 }
 
-export const DenseBuilder: FunctionalComponent<DenseBuilderProps> = (props) => {
+export const DenseBuilder = (props: DenseBuilderProps) => {
 
     const [selectedUnits, setSelectedUnits] = useState(64);
 
@@ -41,7 +41,7 @@ interface Conv2dBuilderProps {
     onAddLayer: (filters: number, kernelSize: number) => void;
 }
 
-export const Conv2dBuilder: FunctionalComponent<Conv2dBuilderProps> = (props) => {
+export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
 
     const [selectedFilters, setSelectedFilters] = useState(12);
     const [selectedKernelSize, setSelectedKernelSize] = useState(3);
@@ -81,7 +81,7 @@ export interface MaxPoolingBuilderProps {
     onAddLayer: (size: number) => void;
 }
 
-export const MaxPoolingBuilder: FunctionalComponent<MaxPoolingBuilderProps> = (props) => {
+export const MaxPoolingBuilder = (props: MaxPoolingBuilderProps) => {
 
     const [selectedSize, setSelectedSize] = useState(2);
 
@@ -110,7 +110,7 @@ export interface NetworkBuilderProps {
     onSubmitNetwork: (model: tf.Sequential) => void;
 }
 
-export const NetworkBuilder: FunctionalComponent<NetworkBuilderProps> = (props) => {
+export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
     const onSubmitNetwork = props.onSubmitNetwork;
 
@@ -192,7 +192,3 @@ export const NetworkBuilder: FunctionalComponent<NetworkBuilderProps> = (props) 
     )
 
 }
-
-
-
-

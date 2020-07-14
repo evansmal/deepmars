@@ -14,7 +14,7 @@ const App = () => {
 
     const [currentNetwork, setCurrentNetwork] = useState(null);
 
-    const onSubmitNetwork = (network: tf.Sequential) {
+    const onSubmitNetwork = (network: tf.Sequential) => {
         console.log("Submitted", network);
         setCurrentNetwork(network);
     }

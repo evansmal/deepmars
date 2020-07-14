@@ -7,7 +7,7 @@ export interface ModelTrainerProps {
     model: tf.Sequential;
 }
 
-export const ModelTrainer: FunctionalComponent<ModelTrainerProps> = (props) => {
+export const ModelTrainer = (props: ModelTrainerProps) => {
 
     const [optimizer, setOptimizer] = useState("adam");
     const [learningRate, setLearningRate] = useState(0.001);
