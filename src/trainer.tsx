@@ -13,12 +13,12 @@ export const ModelTrainer: FunctionalComponent<ModelTrainerProps> = (props) => {
     const [learningRate, setLearningRate] = useState(0.001);
     const [batchSize, setBatchSize] = useState(4);
 
-    const getStatus = (model) => {
+    const getStatus = (model: tf.Sequential | null) => {
         if (model !== null) return "Ready";
         else return "Not Ready";
     }
 
-    const isTrainingDisabled = (model) => {
+    const isTrainingDisabled = (model: tf.Sequential | null) => {
         if (model !== null) return "";
         else return "disabled";
     }
@@ -37,6 +37,21 @@ export const ModelTrainer: FunctionalComponent<ModelTrainerProps> = (props) => {
 
     const compileModel = () => {
         console.log("Starting training!");
+
+        let opt = null;
+        if (optimizer == "adam") {
+            opt = tf.train.adam(learningRate);
+        } else {
+            opt = tf.train.sgd(learningRate);
+        }
+
+        if (props.model) {
+            props.model.compile({ loss: "categoricalCrossentropy", optimizer: opt });
+        } else {
+            console.error("Model is `null`");
+        }
+
+
     }
 
     return (
