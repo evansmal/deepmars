@@ -20,7 +20,7 @@ async function* dataGenerator() {
 }
 
 export async function getTFDataset() {
-    const ds = tf.data.generator(dataGenerator);
+    const ds = tf.data.generator(dataGenerator as any);
     await ds.forEachAsync(e => console.log(e));
 }
 
