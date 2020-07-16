@@ -1,22 +1,23 @@
 {
-  "name": "deepmars",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "build": "tsc",
-    "serve": "parcel serve src/index.html"
-  },
-  "dependencies": {
-    "@tensorflow/tfjs": "^2.0.1",
-    "@tensorflow/tfjs-vis": "^1.4.3",
-    "preact": "^10.4.5"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.12.4",
-    "typescript": "^3.9.6"
-  },
-  "browserslist": [
-    "last 2 Chrome versions"
-  ]
+    "name": "deepmars",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "prebuild": "rm node_modules/@tensorflow/tfjs-vis/node_modules/preact/dist/preact.d.ts",
+        "build": "tsc",
+        "serve": "parcel serve src/index.html"
+    },
+    "dependencies": {
+        "@tensorflow/tfjs": "^2.0.1",
+        "@tensorflow/tfjs-vis": "^1.4.3",
+        "preact": "^10.4.5"
+    },
+    "devDependencies": {
+        "parcel-bundler": "^1.12.4",
+        "typescript": "^3.9.6"
+    },
+    "browserslist": [
+        "last 2 Chrome versions"
+    ]
 }

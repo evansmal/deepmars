@@ -6,6 +6,8 @@ import { useState } from "preact/hooks";
 import { NetworkBuilder } from "./builder";
 import { ModelTrainer } from "./trainer";
 
+import { getTFDataset } from "./data";
+
 export function printInfo() {
     console.log(`Current version ${tf.version.tfjs}`);
 }
@@ -29,4 +31,10 @@ const App = () => {
 }
 
 render(<App />, document.body);
+
+async function main() {
+    await getTFDataset();
+}
+
+main();
 

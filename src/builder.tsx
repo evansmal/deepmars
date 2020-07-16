@@ -1,5 +1,4 @@
 import * as tf from "@tensorflow/tfjs";
-import * as tfvis from "@tensorflow/tfjs-vis";
 
 import { h } from "preact";
 import { useState } from "preact/hooks";
@@ -162,7 +161,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return
         }
         const seq = buildSequentialModel(model);
-        tfvis.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
+        tf.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
         onSubmitNetwork(seq);
     }
 
