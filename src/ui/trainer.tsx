@@ -79,14 +79,21 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
             name: 'Model Training', tab: "Model Trainer", styles: { height: '1000px' }
         };
         const fitCallbacks = tfjs.show.fitCallbacks(container, metrics);
-        props.model.fit(trainingData.x, trainingData.y, { validationSplit: 0.2, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: 15 });
+        props.model.fit(trainingData.x, trainingData.y, { validationSplit: 0.2, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: 50 });
     }
 
     const evalModel = () => {
         console.log("Evaluating");
-        const res = props.model.predict(testingData.x, testingData.y)
-        console.log(res)
+        const res = props.model.predict(testingData.x, testingData.y).argMax(-1);
+        const labels = testingData.y.argMax(-1);
+        console.log(res, labels)
         res.print(true)
+        const container = { name: 'Confusion Matrix', tab: 'Evaluation' };
+        tfjs.metrics.confusionMatrix(labels, res).then(matrix => {
+            tfjs.render.confusionMatrix(
+                container, { values: matrix, tickLabels: ["Sand", "Bedrock", "Rocks"] });
+        });
+
     }
 
     return (
