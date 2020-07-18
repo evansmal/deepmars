@@ -15,7 +15,7 @@ export function getDefaultModelLayers(input_shape: number[], output_classes: num
     model.push(tf.layers.conv2d({
         inputShape: [IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_CHANNELS],
         kernelSize: 5,
-        filters: 8,
+        filters: 12,
         strides: 1,
         activation: 'relu',
         kernelInitializer: 'varianceScaling'
@@ -25,7 +25,7 @@ export function getDefaultModelLayers(input_shape: number[], output_classes: num
 
     model.push(tf.layers.conv2d({
         kernelSize: 5,
-        filters: 16,
+        filters: 24,
         strides: 1,
         activation: 'relu',
         kernelInitializer: 'varianceScaling'
@@ -34,7 +34,7 @@ export function getDefaultModelLayers(input_shape: number[], output_classes: num
 
     model.push(tf.layers.conv2d({
         kernelSize: 3,
-        filters: 20,
+        filters: 32,
         strides: 1,
         activation: 'relu',
         kernelInitializer: 'varianceScaling'

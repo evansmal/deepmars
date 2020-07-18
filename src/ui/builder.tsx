@@ -1,9 +1,10 @@
 import * as tf from "@tensorflow/tfjs";
+import * as tfjs from "@tensorflow/tfjs-vis";
 
 import { h } from "preact";
 import { useState } from "preact/hooks";
 
-import { buildSequentialModel, getDefaultModelLayers } from "./model";
+import { buildSequentialModel, getDefaultModelLayers } from "../model";
 
 interface DenseBuilderProps {
     onAddLayer: (units: number) => void;
@@ -117,7 +118,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
     const addConv = (filters: number, kernelSize: number) => {
         if (model.length == 0) {
-            setModel([...model, tf.layers.conv2d({ inputShape: [100, 100, 3], filters: filters, kernelSize: kernelSize, activation: "relu" })]);
+            setModel([...model, tf.layers.conv2d({ inputShape: [50, 50, 1], filters: filters, kernelSize: kernelSize, activation: "relu" })]);
         } else {
             setModel([...model, tf.layers.conv2d({ filters: filters, kernelSize: kernelSize, activation: "relu" })]);
         }
@@ -125,7 +126,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
     const addPool = (size: number) => {
         if (model.length == 0) {
-            setModel([...model, tf.layers.maxPool2d({ inputShape: [100, 100, 3], poolSize: size })]);
+            setModel([...model, tf.layers.maxPool2d({ inputShape: [50, 50, 1], poolSize: size })]);
         } else {
             setModel([...model, tf.layers.maxPool2d({ poolSize: size })]);
         }
@@ -138,7 +139,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return;
         }
         if (model.length == 0) {
-            setModel([...model, tf.layers.flatten({ inputShape: [100, 100, 3] }), tf.layers.dense({ units: units })]);
+            setModel([...model, tf.layers.flatten({ inputShape: [50, 50, 1] }), tf.layers.dense({ units: units })]);
             return;
         }
 
@@ -161,12 +162,12 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return
         }
         const seq = buildSequentialModel(model);
-        tf.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
+        tfjs.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
         onSubmitNetwork(seq);
     }
 
     const loadDefaultNetwork = () => {
-        setModel(getDefaultModelLayers([100, 100, 1], 9));
+        setModel(getDefaultModelLayers([50, 50, 1], 3));
     }
 
     return (

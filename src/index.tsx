@@ -3,11 +3,8 @@ import * as tf from '@tensorflow/tfjs';
 import { h, render } from "preact";
 import { useState } from "preact/hooks";
 
-import { NetworkBuilder } from "./builder";
-import { ModelTrainer } from "./trainer";
-
-
-import { getFullDatasetFromS3 } from "./s3";
+import { NetworkBuilder } from "./ui/builder";
+import { ModelTrainer } from "./ui/trainer";
 
 export function printInfo() {
     console.log(`Current version ${tf.version.tfjs}`);
@@ -33,12 +30,8 @@ const App = () => {
 
 render(<App />, document.body);
 
-const bucket_name = "deepmars";
 
 async function main() {
-
-    const x = await getFullDatasetFromS3(bucket_name);
-    console.log(x.training[0]);
 
 }
 

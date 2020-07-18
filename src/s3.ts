@@ -1,20 +1,9 @@
 import { S3 } from "aws-sdk";
 
+import { FullDataset, RawPair, TerrainClass } from "./types";
+
 const S3_TRAIN_PREFIXES = ["train/sand", "train/bedrock", "train/rocks"];
 const S3_TEST_PREFIXES = ["test/sand", "test/bedrock", "test/rocks"];
-
-enum TerrainClass {
-    sand,
-    rocks,
-    bedrock,
-}
-
-type RawExample = [ArrayBuffer, TerrainClass]
-
-export interface RawDataset {
-    training: RawExample[];
-    test: RawExample[];
-}
 
 export async function listFiles(bucket_name: string, prefix: string): Promise<Array<string>> {
     return new Promise((resolve, reject) => {
@@ -74,16 +63,11 @@ function getClassnames(paths: string[]): TerrainClass[] {
     return paths.map(path => { return TerrainClass[path.split("/")[1]] });
 }
 
-
-function zipDataset(data: ArrayBuffer[], labels: TerrainClass[]): RawExample[] {
-    return data.map((ex, i) => { return [ex, labels[i]] });
-}
-
-export async function getFullDatasetFromS3(bucket_name: string): Promise<RawDataset> {
+export async function getFullDatasetFromS3(bucket_name: string): Promise<FullDataset<RawPair>> {
     const [train, test] = await Promise.all([getTrainingSetURLs(bucket_name), getTestingSetURLs(bucket_name)]);
     const [training_data, test_data] = await Promise.all([getMultipleFile(bucket_name, train), getMultipleFile(bucket_name, test)]);
     return {
-        training: zipDataset(training_data, getClassnames(train)),
-        test: zipDataset(test_data, getClassnames(test))
+        training: { x: training_data, y: getClassnames(train) },
+        test: { x: test_data, y: getClassnames(test) }
     }
 }
