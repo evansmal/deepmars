@@ -6,7 +6,8 @@ import { useState } from "preact/hooks";
 import { NetworkBuilder } from "./builder";
 import { ModelTrainer } from "./trainer";
 
-import { getTFDataset } from "./data";
+
+import { getFullDatasetFromS3 } from "./s3";
 
 export function printInfo() {
     console.log(`Current version ${tf.version.tfjs}`);
@@ -32,8 +33,13 @@ const App = () => {
 
 render(<App />, document.body);
 
+const bucket_name = "deepmars";
+
 async function main() {
-    await getTFDataset();
+
+    const x = await getFullDatasetFromS3(bucket_name);
+    console.log(x.training[0]);
+
 }
 
 main();

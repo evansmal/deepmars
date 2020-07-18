@@ -11,6 +11,8 @@
     "dependencies": {
         "@tensorflow/tfjs": "^2.0.1",
         "@tensorflow/tfjs-vis": "^1.4.3",
+        "@types/aws-sdk": "^2.7.0",
+        "aws-sdk": "^2.715.0",
         "preact": "^10.4.5"
     },
     "devDependencies": {
