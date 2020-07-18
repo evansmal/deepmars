@@ -9,15 +9,10 @@ import { createStore } from "redux";
 import { NetworkBuilder } from "./ui/builder";
 import { ModelTrainer } from "./ui/trainer";
 
-export function printInfo() {
-    console.log(`Current version ${tf.version.tfjs}`);
-}
+import { allReducers } from "./reducers"
 
-const root_reducer = () => {
-    time: Date.now()
-}
-
-const store = createStore(root_reducer);
+const store = createStore(allReducers, (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 const App = () => {
     const [currentNetwork, setCurrentNetwork] = React.useState(null);

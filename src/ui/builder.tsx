@@ -168,6 +168,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
         const seq = buildSequentialModel(model);
         tfjs.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
         onSubmitNetwork(seq);
+
     }
 
     const loadDefaultNetwork = () => {
