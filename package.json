@@ -4,20 +4,25 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "prebuild": "rm node_modules/@tensorflow/tfjs-vis/node_modules/preact/dist/preact.d.ts",
         "build": "tsc",
         "serve": "parcel serve src/index.html"
     },
     "dependencies": {
         "@tensorflow/tfjs": "^2.0.1",
         "@tensorflow/tfjs-vis": "^1.4.3",
-        "@types/aws-sdk": "^2.7.0",
         "aws-sdk": "^2.715.0",
-        "preact": "^10.4.5"
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-redux": "^7.2.0",
+        "redux": "^4.0.5"
     },
     "devDependencies": {
         "parcel-bundler": "^1.12.4",
-        "typescript": "^3.9.6"
+        "typescript": "^3.9.6",
+        "@types/aws-sdk": "^2.7.0",
+        "@types/react": "^16.9.43",
+        "@types/react-dom": "^16.9.8",
+        "@types/react-redux": "^7.1.9"
     },
     "browserslist": [
         "last 2 Chrome versions"

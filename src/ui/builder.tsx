@@ -1,8 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 import * as tfjs from "@tensorflow/tfjs-vis";
 
-import { h } from "preact";
-import { useState } from "preact/hooks";
+import * as React from "react";
 
 import { buildSequentialModel, getDefaultModelLayers } from "../model";
 
@@ -12,7 +11,7 @@ interface DenseBuilderProps {
 
 export const DenseBuilder = (props: DenseBuilderProps) => {
 
-    const [selectedUnits, setSelectedUnits] = useState(64);
+    const [selectedUnits, setSelectedUnits] = React.useState(64);
 
     const onSubmit = () => {
         props.onAddLayer(selectedUnits);
@@ -21,7 +20,6 @@ export const DenseBuilder = (props: DenseBuilderProps) => {
     const onChangeUnits = (event) => {
         setSelectedUnits(parseInt(event.target.value));
     }
-
 
     return (
         <div>
@@ -43,8 +41,8 @@ interface Conv2dBuilderProps {
 
 export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
 
-    const [selectedFilters, setSelectedFilters] = useState(12);
-    const [selectedKernelSize, setSelectedKernelSize] = useState(3);
+    const [selectedFilters, setSelectedFilters] = React.useState(12);
+    const [selectedKernelSize, setSelectedKernelSize] = React.useState(3);
 
     const onSubmit = () => {
         props.onAddLayer(selectedFilters, selectedKernelSize);
@@ -83,7 +81,7 @@ export interface MaxPoolingBuilderProps {
 
 export const MaxPoolingBuilder = (props: MaxPoolingBuilderProps) => {
 
-    const [selectedSize, setSelectedSize] = useState(2);
+    const [selectedSize, setSelectedSize] = React.useState(2);
 
     const onSubmit = () => {
         props.onAddLayer(selectedSize);
@@ -114,7 +112,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
     const onSubmitNetwork = props.onSubmitNetwork;
 
-    const [model, setModel] = useState([]);
+    const [model, setModel] = React.useState([]);
 
     const addConv = (filters: number, kernelSize: number) => {
         if (model.length == 0) {
@@ -192,8 +190,6 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             <p>Number of layers: {model.length}</p>
             <button onClick={buildModel}>Confirm</button>
             <button onClick={removeLastLayer}>Remove</button>
-
-
         </div>
     )
 

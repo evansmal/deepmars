@@ -1,11 +1,9 @@
 import * as tf from '@tensorflow/tfjs';
 import * as tfjs from "@tensorflow/tfjs-vis";
 
-import { h } from "preact";
-import { useState, useEffect } from "preact/hooks";
+import * as React from "react";
 
 import { getFullDatasetFromS3 } from "../s3";
-import { FullDataset, TensorPair } from "../types";
 import { convertImageToTensor, convertRawExamplesToImage, convertToOneHot } from "../data";
 
 export interface ModelTrainerProps {
@@ -14,13 +12,13 @@ export interface ModelTrainerProps {
 
 export const ModelTrainer = (props: ModelTrainerProps) => {
 
-    const [optimizer, setOptimizer] = useState("adam");
-    const [learningRate, setLearningRate] = useState(0.001);
-    const [batchSize, setBatchSize] = useState(32);
-    const [trainingData, setTrainingData] = useState(null);
-    const [testingData, setTestingData] = useState(null);
+    const [optimizer, setOptimizer] = React.useState("adam");
+    const [learningRate, setLearningRate] = React.useState(0.001);
+    const [batchSize, setBatchSize] = React.useState(32);
+    const [trainingData, setTrainingData] = React.useState(null);
+    const [testingData, setTestingData] = React.useState(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const bucket_name = "deepmars"
         getFullDatasetFromS3(bucket_name).then((raw) => {
             convertRawExamplesToImage(raw.training.x).then((data) => {

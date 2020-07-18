@@ -4,7 +4,7 @@
         "module": "ESNext",
         "target": "es5",
         "jsx": "react",
-        "jsxFactory": "h",
+        "jsxFactory": "React.createElement",
         "lib": [
             "es6",
             "dom"
