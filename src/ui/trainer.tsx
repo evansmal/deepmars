@@ -83,16 +83,21 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
     }
 
     const evalModel = () => {
-        console.log("Evaluating");
+
         const res = props.model.predict(testingData.x, testingData.y).argMax(-1);
         const labels = testingData.y.argMax(-1);
-        console.log(res, labels)
-        res.print(true)
-        const container = { name: 'Confusion Matrix', tab: 'Evaluation' };
+
+        const conf_container = { name: 'Confusion Matrix', tab: 'Evaluation' };
         tfjs.metrics.confusionMatrix(labels, res).then(matrix => {
             tfjs.render.confusionMatrix(
-                container, { values: matrix, tickLabels: ["Sand", "Bedrock", "Rocks"] });
+                conf_container, { values: matrix, tickLabels: ["Sand", "Bedrock", "Rocks"] });
         });
+
+        const acc_container = { name: 'Accuracy', tab: 'Evaluation' };
+        tfjs.metrics.perClassAccuracy(labels, res).then((acc) => {
+            tfjs.show.perClassAccuracy(acc_container, acc, ["Sand", "Bedrock", "Rocks"]);
+        });
+
 
     }
 

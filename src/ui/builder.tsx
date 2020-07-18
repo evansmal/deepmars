@@ -19,7 +19,7 @@ export const DenseBuilder = (props: DenseBuilderProps) => {
     }
 
     const onChangeUnits = (event) => {
-        setSelectedUnits(event.target.value);
+        setSelectedUnits(parseInt(event.target.value));
     }
 
 
@@ -51,11 +51,11 @@ export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
     }
 
     const onChangeFilters = (event) => {
-        setSelectedFilters(event.target.value);
+        setSelectedFilters(parseInt(event.target.value));
     }
 
     const onChangeKernelSize = (event) => {
-        setSelectedKernelSize(event.target.value);
+        setSelectedKernelSize(parseInt(event.target.value));
     }
 
     return (
@@ -90,7 +90,7 @@ export const MaxPoolingBuilder = (props: MaxPoolingBuilderProps) => {
     }
 
     const onChangeSize = (event) => {
-        setSelectedSize(event.target.value);
+        setSelectedSize(parseInt(event.target.value));
     }
 
     return (
@@ -160,6 +160,12 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
         if (model.length == 0) {
             console.error("No layers selected. Doing nothing.");
             return
+        }
+        let last_layer = model[model.length - 1];
+        if (last_layer.constructor.name == "Dense") {
+            model.push(tf.layers.dense({ units: 3 }));
+        } else {
+            model.push(tf.layers.flatten(), tf.layers.dense({ units: 3, activation: "softmax" }));
         }
         const seq = buildSequentialModel(model);
         tfjs.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);

@@ -40,15 +40,5 @@ export function getDefaultModelLayers(input_shape: number[], output_classes: num
         kernelInitializer: 'varianceScaling'
     }));
     model.push(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }));
-
-    model.push(tf.layers.flatten());
-
-    const NUM_OUTPUT_CLASSES = output_classes;
-    model.push(tf.layers.dense({
-        units: NUM_OUTPUT_CLASSES,
-        kernelInitializer: 'varianceScaling',
-        activation: 'softmax'
-    }));
-
     return model;
 }
