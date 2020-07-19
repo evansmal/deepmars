@@ -7,13 +7,14 @@ import { convertImageToTensor, convertRawExamplesToImage, convertToOneHot } from
 interface TensorDataset {
     x: tf.Tensor;
     y: tf.Tensor;
+    images: HTMLImageElement[];
 }
 
 
 async function downloadAndPreprocess(raw: RawPair): Promise<TensorDataset> {
     const images = await convertRawExamplesToImage(raw.x)
     const tensors = await convertImageToTensor(images);
-    return { x: tensors, y: convertToOneHot(raw.y) }
+    return { x: tensors, y: convertToOneHot(raw.y), images: images };
 }
 
 export class DatasetLoader {
@@ -22,7 +23,6 @@ export class DatasetLoader {
     public training_dataset: TensorDataset;
 
     private on_ready_callback: { (): void; }[] = [];
-
 
     async downloadData() {
         console.log("Starting download...");
