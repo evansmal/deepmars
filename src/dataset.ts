@@ -9,9 +9,11 @@ interface TensorDataset {
     y: tf.Tensor;
 }
 
+
 async function downloadAndPreprocess(raw: RawPair): Promise<TensorDataset> {
     const images = await convertRawExamplesToImage(raw.x)
-    return { x: convertImageToTensor(images), y: convertToOneHot(raw.y) }
+    const tensors = await convertImageToTensor(images);
+    return { x: tensors, y: convertToOneHot(raw.y) }
 }
 
 export class DatasetLoader {

@@ -28,12 +28,19 @@ function normalizeTensor(tensor: tf.Tensor): tf.Tensor {
     return tensor.sub(inputMin).div(inputMax.sub(inputMin));
 }
 
-export function convertImageToTensor(examples: HTMLImageElement[]): tf.Tensor {
-    const tensors = examples.map((im: HTMLImageElement) => { return tf.browser.fromPixels(im, 1) });
-    const resize = tensors.map(t => { return tf.image.resizeBilinear(t, [50, 50], true) })
-    const reshape = resize.map(t => { return t.reshape([1, 50, 50, 1]) })
-    const norm = reshape.map(t => { return normalizeTensor(t) })
-    return tf.concat(norm, 0);
+function sleep(ms: number) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+export async function convertImageToTensor(examples: HTMLImageElement[]): Promise<tf.Tensor> {
+    const result = []
+    for (let example of examples) {
+        const tensor = tf.browser.fromPixels(example, 1);
+        await sleep(0);
+        const resize = tf.image.resizeBilinear(tensor, [50, 50], true).reshape([1, 50, 50, 1]);
+        await sleep(0);
+        result.push(normalizeTensor(resize));
+        await sleep(0);
+    }
+    return tf.concat(result, 0);
 }
 
 export function convertToOneHot(labels: number[]) {
