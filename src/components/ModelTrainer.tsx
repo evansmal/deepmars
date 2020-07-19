@@ -97,6 +97,7 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
         <div>
             <h2> Model Trainer </h2>
             <p>Status: {getStatus(props.model)} </p>
+            <p>Choose an optimization algorithm and tune training hyperparameters.</p>
 
             <br />
 
@@ -126,8 +127,11 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
             <br />
             <br />
 
-            <button disabled={isTrainingDisabled(props.model)} onClick={compileModel}>Start Training</button>
-            <button disabled={isTrainingDisabled(props.model)} onClick={evalModel}>Evaluate</button>
+            <button disabled={isTrainingDisabled(props.model)} onClick={compileModel}>Run Training</button>
+
+            <br />
+
+            <button disabled={isTrainingDisabled(props.model)} onClick={evalModel}>Evaluate Performance</button>
 
         </div>
     )

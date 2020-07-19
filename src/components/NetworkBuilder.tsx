@@ -137,15 +137,15 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return;
         }
         if (model.length == 0) {
-            setModel([...model, tf.layers.flatten({ inputShape: [50, 50, 1] }), tf.layers.dense({ units: units })]);
+            setModel([...model, tf.layers.flatten({ inputShape: [50, 50, 1] }), tf.layers.dense({ units: units, activation: "relu" })]);
             return;
         }
 
         let last_layer = model[model.length - 1];
         if (last_layer.constructor.name == "Dense") {
-            setModel([...model, tf.layers.dense({ units: units })]);
+            setModel([...model, tf.layers.dense({ units: units, activation: "relu" })]);
         } else {
-            setModel([...model, tf.layers.flatten(), tf.layers.dense({ units: units })]);
+            setModel([...model, tf.layers.flatten(), tf.layers.dense({ units: units, activation: "relu" })]);
         }
     }
 
@@ -166,7 +166,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             model.push(tf.layers.flatten(), tf.layers.dense({ units: 3, activation: "softmax" }));
         }
         const seq = buildSequentialModel(model);
-        tfjs.show.modelSummary({ name: "Model Summary", tab: "Architecture Builder" }, seq);
+        tfjs.show.modelSummary({ name: "Model Summary", tab: "Model Builder" }, seq);
         onSubmitNetwork(seq);
 
     }
@@ -178,6 +178,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
     return (
         <div>
             <h2> Model Designer </h2>
+            <p>Add layers sequentially and click confirm when you are satisfied. A final Dense layer with three units will be added for you.</p>
             <div className="builder-grid">
                 <div className="builder-item">
                     <Conv2dBuilder onAddLayer={addConv} />

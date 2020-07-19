@@ -1,7 +1,67 @@
 <html>
 
-<body>
-    <script src="./index.tsx"></script>
-</body>
+<head>
+    <h1>DeepMars</h1>
+    <p style="width: 800px;">
+        Train a convolutional neural network in your browser to classify imagery from Mars into three different
+        classes. Use the Model Designer to build a custom architecture and then train it using the Model Trainer. The
+        dataset will be downloaded in the background for you. Refresh the page to completely reset.
+    </p>
+    <h2>Dataset</h2>
+    <div>
+        <p style="width: 800px;">
+            The dataset you'll be using is comprised of 50x50 pixel grayscale images that were downlinked from NASA's
+            Mars
+            Exploration Rover (MER) in 2005. Someone has already labelled these images as "sand", "rocks", or "bedrock".
+            The
+            dataset has been split into a train and test set.
+        </p>
+        <table style="width: 250px; padding: 20px;">
+            <tr>
+                <td>Sand</td>
+                <td>
+                    <img src="../assets/sand1.png" />
+                </td>
+                <td>
+                    <img src="../assets/sand2.png" />
+                </td>
+                <td>
+                    <img src="../assets/sand3.png" />
+                </td>
+            </tr>
+            <tr>
+                <td>Rocks</td>
+                <td>
+                    <img src="../assets/rocks1.png" />
+                </td>
+                <td>
+                    <img src="../assets/rocks2.png" />
+                </td>
+                <td>
+                    <img src="../assets/rocks3.png" />
+                </td>
+            </tr>
+            <tr>
+                <td>Bedrock</td>
+                <td>
+                    <img src="../assets/bedrock1.png" />
+                </td>
+                <td>
+                    <img src="../assets/bedrock2.png" />
+                </td>
+                <td>
+                    <img src="../assets/bedrock3.png" />
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+
+    <head>
+
+    <body>
+        <script src="./index.tsx"></script>
+    </body>
 
 </html>

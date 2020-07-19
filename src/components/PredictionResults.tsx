@@ -77,9 +77,10 @@ export const PredictionResults = (props: PredictionResultsProps) => {
     return (
         <div>
             <h2>Test Results</h2>
-            <button onClick={handleClick}>Get Predictions</button>
-            <div className="prediction-grid">
-                {imagesToRender}
+            <div className="prediction-all">
+                <div className="prediction-grid">
+                    {imagesToRender}
+                </div>
             </div>
         </div>
     )

@@ -36,13 +36,35 @@ const App = () => {
         setCurrentNetwork(network);
     }
 
+    const divStyle = {
+
+    };
+
     return (
         <div>
             <h3>{getDataStatus()}</h3>
-            <NetworkBuilder onSubmitNetwork={onSubmitNetwork} />
+            <hr />
+
+            <div style={divStyle}>
+                <NetworkBuilder onSubmitNetwork={onSubmitNetwork} />
+            </div>
+
             <br />
-            <ModelTrainer model={currentNetwork} dataset={dataset} />
-            <PredictionResults model={currentNetwork} dataset={dataset} />
+            <hr />
+
+            <div style={divStyle}>
+                <ModelTrainer model={currentNetwork} dataset={dataset} />
+            </div>
+
+            <br />
+            <hr />
+
+            <div style={divStyle}>
+                <PredictionResults model={currentNetwork} dataset={dataset} />
+            </div>
+
+            <br />
+            <hr />
         </div>
     );
 }

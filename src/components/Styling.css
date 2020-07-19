@@ -11,6 +11,11 @@
     justify-self: start;
 }
 
+.prediction-all {
+    padding: 30px;
+    width: 800px;
+}
+
 .prediction-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
