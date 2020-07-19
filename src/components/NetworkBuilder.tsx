@@ -36,16 +36,17 @@ export const DenseBuilder = (props: DenseBuilderProps) => {
 }
 
 interface Conv2dBuilderProps {
-    onAddLayer: (filters: number, kernelSize: number) => void;
+    onAddLayer: (filters: number, kernelSize: number, dropout: boolean) => void;
 }
 
 export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
 
     const [selectedFilters, setSelectedFilters] = React.useState(12);
     const [selectedKernelSize, setSelectedKernelSize] = React.useState(3);
+    const [enabledDropout, setEnabledDropout] = React.useState(false);
 
     const onSubmit = () => {
-        props.onAddLayer(selectedFilters, selectedKernelSize);
+        props.onAddLayer(selectedFilters, selectedKernelSize, !!enabledDropout);
     }
 
     const onChangeFilters = (event) => {
@@ -54,6 +55,10 @@ export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
 
     const onChangeKernelSize = (event) => {
         setSelectedKernelSize(parseInt(event.target.value));
+    }
+
+    const onEnabledDropout = () => {
+        setEnabledDropout(!enabledDropout);
     }
 
     return (
@@ -67,6 +72,11 @@ export const Conv2dBuilder = (props: Conv2dBuilderProps) => {
 
             <label htmlFor="kernel">Kernel size: </label>
             <input id="kernel" onChange={onChangeKernelSize} value={selectedKernelSize} min="1" type="number" />
+
+            <br />
+
+            <input id="dropout" onChange={onEnabledDropout} type="checkbox" />
+            <label htmlFor="dropout">Use Dropout layer? (0.2)</label>
 
             <br />
 
@@ -114,12 +124,21 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
     const [model, setModel] = React.useState([]);
 
-    const addConv = (filters: number, kernelSize: number) => {
+    const addConv = (filters: number, kernelSize: number, dropout: boolean) => {
+        console.log(dropout);
+        const add = []
         if (model.length == 0) {
-            setModel([...model, tf.layers.conv2d({ inputShape: [50, 50, 1], filters: filters, kernelSize: kernelSize, activation: "relu" })]);
+            add.push(tf.layers.conv2d({ inputShape: [50, 50, 1], filters: filters, kernelSize: kernelSize, activation: "relu" }));
         } else {
-            setModel([...model, tf.layers.conv2d({ filters: filters, kernelSize: kernelSize, activation: "relu" })]);
+            add.push(tf.layers.conv2d({ filters: filters, kernelSize: kernelSize, activation: "relu" }));
         }
+
+        if (dropout === true) {
+            console.log("Adding drop");
+            add.push(tf.layers.dropout({ rate: 0.2 }))
+        }
+
+        setModel([...model, ...add]);
     }
 
     const addPool = (size: number) => {

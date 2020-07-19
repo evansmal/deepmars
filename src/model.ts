@@ -32,13 +32,5 @@ export function getDefaultModelLayers(input_shape: number[], output_classes: num
     }));
     model.push(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }));
 
-    model.push(tf.layers.conv2d({
-        kernelSize: 3,
-        filters: 32,
-        strides: 1,
-        activation: 'relu',
-        kernelInitializer: 'varianceScaling'
-    }));
-    model.push(tf.layers.maxPooling2d({ poolSize: [2, 2], strides: [2, 2] }));
     return model;
 }

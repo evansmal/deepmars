@@ -72,7 +72,8 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
         };
         const fitCallbacks = tfjs.show.fitCallbacks(container, metrics);
 
-        props.model.fit(props.dataset.training_dataset.x, props.dataset.training_dataset.y, { validationSplit: 0.3, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: epochs });
+        props.model.fit(props.dataset.training_dataset.x, props.dataset.training_dataset.y,
+            { validationSplit: 0.3, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: epochs, yieldEvery: 80 });
     }
 
     const evalModel = () => {
@@ -129,8 +130,10 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
             <button disabled={isTrainingDisabled(props.model)} onClick={compileModel}>Run Training</button>
 
             <br />
+            <br />
 
-            <button disabled={isTrainingDisabled(props.model)} onClick={evalModel}>Evaluate Performance</button>
+            <label htmlFor="batch_size">Evaluate model on test set: </label>
+            <button disabled={isTrainingDisabled(props.model)} onClick={evalModel}>Evaluate</button>
 
         </div>
     )
