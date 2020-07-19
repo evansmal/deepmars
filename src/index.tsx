@@ -5,6 +5,7 @@ import * as React from "react";
 
 import { NetworkBuilder } from "./components/NetworkBuilder";
 import { ModelTrainer } from "./components/ModelTrainer";
+import { PredictionResults } from "./components/PredictionResults";
 import { ActivationBrowser } from "./components/ActivationBrowser";
 
 import { DatasetLoader } from "./dataset";
@@ -41,7 +42,7 @@ const App = () => {
             <NetworkBuilder onSubmitNetwork={onSubmitNetwork} />
             <br />
             <ModelTrainer model={currentNetwork} dataset={dataset} />
-            <ActivationBrowser model={currentNetwork} dataset={dataset} />
+            <PredictionResults model={currentNetwork} dataset={dataset} />
         </div>
     );
 }

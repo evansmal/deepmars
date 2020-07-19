@@ -11,6 +11,41 @@
     justify-self: start;
 }
 
+.prediction-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 5px;
+    row-gap: 1em;
+    width: 200px;
+}
+
+.prediction-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 5px;
+    row-gap: 1em;
+    width: 200px;
+}
+
+.prediction-truth {
+    justify-self: center;
+    text-align: center;
+    width: 100px;
+    margin-top: 15px;
+}
+
+.prediction-progress {
+    width: 50px;
+}
+
+.prediction-img {
+    height: 75px;
+}
+
+.prediction-label {
+    width: 60px;
+}
+
 body {
     padding: 15px;
     font-family: Roboto;
