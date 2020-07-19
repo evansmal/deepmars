@@ -29,7 +29,6 @@ function normalizeTensor(tensor: tf.Tensor): tf.Tensor {
 }
 
 export function convertImageToTensor(examples: HTMLImageElement[]): tf.Tensor {
-    console.log(examples[0].height, examples[0].width);
     const tensors = examples.map((im: HTMLImageElement) => { return tf.browser.fromPixels(im, 1) });
     const resize = tensors.map(t => { return tf.image.resizeBilinear(t, [50, 50], true) })
     const reshape = resize.map(t => { return t.reshape([1, 50, 50, 1]) })

@@ -3,30 +3,41 @@ import * as tf from '@tensorflow/tfjs';
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 
-import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { NetworkBuilder } from "./components/NetworkBuilder";
+import { ModelTrainer } from "./components/ModelTrainer";
 
-import { NetworkBuilder } from "./ui/builder";
-import { ModelTrainer } from "./ui/trainer";
+import { DatasetLoader } from "./dataset";
 
-import { allReducers } from "./reducers"
-
-const store = createStore(allReducers, (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
-);
+const dataset = new DatasetLoader();
+dataset.downloadData();
 
 const App = () => {
+
     const [currentNetwork, setCurrentNetwork] = React.useState(null);
+    const [dataDownloaded, setDataDownloaded] = React.useState(false);
+
+    dataset.onDownloadComplete(() => {
+        setDataDownloaded(true);
+    })
+
+    const getDataStatus = () => {
+        if (dataDownloaded === true) {
+            return "Dataset download is complete";
+        } else {
+            return "Dataset is currently being downloaded..."
+        }
+    }
+
     const onSubmitNetwork = (network: tf.Sequential) => {
-        console.log("Submitted", network);
         setCurrentNetwork(network);
     }
+
     return (
         <div>
-            <Provider store={store}>
-                <NetworkBuilder onSubmitNetwork={onSubmitNetwork} />
-                <br />
-                <ModelTrainer model={currentNetwork} />
-            </Provider>
+            <h3>{getDataStatus()}</h3>
+            <NetworkBuilder onSubmitNetwork={onSubmitNetwork} />
+            <br />
+            <ModelTrainer model={currentNetwork} dataset={dataset} />
         </div>
     );
 }

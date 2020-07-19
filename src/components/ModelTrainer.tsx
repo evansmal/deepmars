@@ -3,11 +3,11 @@ import * as tfjs from "@tensorflow/tfjs-vis";
 
 import * as React from "react";
 
-import { getFullDatasetFromS3 } from "../s3";
-import { convertImageToTensor, convertRawExamplesToImage, convertToOneHot } from "../data";
+import { DatasetLoader } from "../dataset";
 
 export interface ModelTrainerProps {
     model: tf.Sequential;
+    dataset: DatasetLoader;
 }
 
 export const ModelTrainer = (props: ModelTrainerProps) => {
@@ -15,33 +15,23 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
     const [optimizer, setOptimizer] = React.useState("adam");
     const [learningRate, setLearningRate] = React.useState(0.001);
     const [batchSize, setBatchSize] = React.useState(32);
-    const [trainingData, setTrainingData] = React.useState(null);
-    const [testingData, setTestingData] = React.useState(null);
+    const [epochs, setEpochs] = React.useState(5);
+    const [datasetReady, setDatasetReady] = React.useState(false);
 
-    React.useEffect(() => {
-        const bucket_name = "deepmars"
-        getFullDatasetFromS3(bucket_name).then((raw) => {
-            convertRawExamplesToImage(raw.training.x).then((data) => {
-                const training = { x: convertImageToTensor(data), y: convertToOneHot(raw.training.y) }
-                setTrainingData(training);
-            });
-            convertRawExamplesToImage(raw.test.x).then((data) => {
-                const testing = { x: convertImageToTensor(data), y: convertToOneHot(raw.test.y) }
-                setTestingData(testing);
-            });
-        });
-        return () => {
-        };
-    }, []);
+    props.dataset.onDownloadComplete(() => {
+        console.log("Dataset is ready!");
+        setDatasetReady(true);
+
+    });
 
     const getStatus = (model: tf.Sequential | null) => {
-        if (model !== null && trainingData !== null) return "Ready";
-        else if (model !== null && trainingData == null) return "Loading dataset - please wait...";
+        if (model !== null && datasetReady == true) return "Ready";
+        else if (model !== null && datasetReady == false) return "Loading dataset - please wait...";
         else return "Not Ready";
     }
 
     const isTrainingDisabled = (model: tf.Sequential | null) => {
-        if (model !== null && trainingData !== null) return false;
+        if (model !== null && datasetReady == true) return false;
         else return true;
     }
 
@@ -55,6 +45,10 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
 
     const onSelectOptimizers = (event) => {
         setOptimizer(event.target.value);
+    }
+
+    const onSelectEpochs = (event) => {
+        setEpochs(parseInt(event.target.value));
     }
 
     const compileModel = () => {
@@ -77,13 +71,13 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
             name: 'Model Training', tab: "Model Trainer", styles: { height: '1000px' }
         };
         const fitCallbacks = tfjs.show.fitCallbacks(container, metrics);
-        props.model.fit(trainingData.x, trainingData.y, { validationSplit: 0.2, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: 50 });
+        props.model.fit(props.dataset.training_dataset.x, props.dataset.training_dataset.y, { validationSplit: 0.2, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: epochs });
     }
 
     const evalModel = () => {
 
-        const res = props.model.predict(testingData.x, testingData.y).argMax(-1);
-        const labels = testingData.y.argMax(-1);
+        const res = props.model.predict(props.dataset.testing_dataset.x).argMax(-1);
+        const labels = props.dataset.testing_dataset.y.argMax(-1);
 
         const conf_container = { name: 'Confusion Matrix', tab: 'Evaluation' };
         tfjs.metrics.confusionMatrix(labels, res).then(matrix => {
@@ -111,6 +105,11 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
                 <option value="adam">Adam</option>
                 <option value="sgd">SGD</option>
             </select>
+
+            <br />
+            <br />
+            <label htmlFor="epochs">Epochs: </label>
+            <input id="epochs" onChange={onSelectEpochs} value={epochs} min="1" type="number" />
 
             <br />
             <br />
