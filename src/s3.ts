@@ -65,9 +65,13 @@ function getClassnames(paths: string[]): TerrainClass[] {
 
 export async function getFullDatasetFromS3(bucket_name: string): Promise<FullDataset<RawPair>> {
     const [train, test] = await Promise.all([getTrainingSetURLs(bucket_name), getTestingSetURLs(bucket_name)]);
-    const [training_data, test_data] = await Promise.all([getMultipleFile(bucket_name, train), getMultipleFile(bucket_name, test)]);
+
+    const shuffled_train = train.sort(() => Math.random() - 0.5)
+    const shuffled_test = test.sort(() => Math.random() - 0.5)
+
+    const [training_data, test_data] = await Promise.all([getMultipleFile(bucket_name, shuffled_train), getMultipleFile(bucket_name, shuffled_test)]);
     return {
-        training: { x: training_data, y: getClassnames(train) },
-        test: { x: test_data, y: getClassnames(test) }
+        training: { x: training_data, y: getClassnames(shuffled_train) },
+        test: { x: test_data, y: getClassnames(shuffled_test) }
     }
 }

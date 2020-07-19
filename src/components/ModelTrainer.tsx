@@ -14,8 +14,8 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
 
     const [optimizer, setOptimizer] = React.useState("adam");
     const [learningRate, setLearningRate] = React.useState(0.001);
-    const [batchSize, setBatchSize] = React.useState(32);
-    const [epochs, setEpochs] = React.useState(5);
+    const [batchSize, setBatchSize] = React.useState(16);
+    const [epochs, setEpochs] = React.useState(10);
     const [datasetReady, setDatasetReady] = React.useState(false);
 
     props.dataset.onDownloadComplete(() => {
@@ -26,8 +26,8 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
 
     const getStatus = (model: tf.Sequential | null) => {
         if (model !== null && datasetReady == true) return "Ready";
-        else if (model !== null && datasetReady == false) return "Loading dataset - please wait...";
-        else return "Not Ready";
+        else if (model !== null && datasetReady == false) return "Waiting for dataset to download...";
+        else return "Waiting for a model...";
     }
 
     const isTrainingDisabled = (model: tf.Sequential | null) => {
@@ -62,16 +62,17 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
         }
 
         if (props.model) {
-            props.model.compile({ loss: "categoricalCrossentropy", optimizer: opt });
+            props.model.compile({ loss: "categoricalCrossentropy", optimizer: opt, metrics: ["accuracy"] });
         } else {
             console.error("Model is `null`");
         }
-        const metrics = ['loss', 'acc'];
+        const metrics = ['loss', 'acc', "val_loss", "val_acc"];
         const container = {
-            name: 'Model Training', tab: "Model Trainer", styles: { height: '1000px' }
+            name: 'Model Training', tab: "Training Performance", styles: { height: '1000px' }
         };
         const fitCallbacks = tfjs.show.fitCallbacks(container, metrics);
-        props.model.fit(props.dataset.training_dataset.x, props.dataset.training_dataset.y, { validationSplit: 0.2, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: epochs });
+
+        props.model.fit(props.dataset.training_dataset.x, props.dataset.training_dataset.y, { validationSplit: 0.3, shuffle: true, callbacks: fitCallbacks, batchSize: batchSize, epochs: epochs });
     }
 
     const evalModel = () => {
@@ -82,12 +83,12 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
         const conf_container = { name: 'Confusion Matrix', tab: 'Evaluation' };
         tfjs.metrics.confusionMatrix(labels, res).then(matrix => {
             tfjs.render.confusionMatrix(
-                conf_container, { values: matrix, tickLabels: ["Sand", "Bedrock", "Rocks"] });
+                conf_container, { values: matrix, tickLabels: ["Sand", "Rocks", "Bedrock"] });
         });
 
         const acc_container = { name: 'Accuracy', tab: 'Evaluation' };
         tfjs.metrics.perClassAccuracy(labels, res).then((acc) => {
-            tfjs.show.perClassAccuracy(acc_container, acc, ["Sand", "Bedrock", "Rocks"]);
+            tfjs.show.perClassAccuracy(acc_container, acc, ["Sand", "Rocks", "Bedrock"]);
         });
 
 
@@ -96,10 +97,8 @@ export const ModelTrainer = (props: ModelTrainerProps) => {
     return (
         <div>
             <h2> Model Trainer </h2>
-            <p>Status: {getStatus(props.model)} </p>
             <p>Choose an optimization algorithm and tune training hyperparameters.</p>
-
-            <br />
+            <p>Status: {getStatus(props.model)} </p>
 
             <label>Optimizer: </label>
             <select id="optimizers" value={optimizer} onChange={onSelectOptimizers}>

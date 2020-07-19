@@ -199,7 +199,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
             <p>Number of layers: {model.length}</p>
             <button onClick={buildModel}>Confirm</button>
-            <button onClick={removeLastLayer}>Remove</button>
+            <button onClick={removeLastLayer}>Remove Last Layer</button>
         </div >
     )
 

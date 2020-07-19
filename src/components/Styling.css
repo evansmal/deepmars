@@ -43,8 +43,15 @@
     width: 50px;
 }
 
-.prediction-img {
+.prediction-img-wrong {
     height: 75px;
+    border: 2px solid red;
+
+}
+
+.prediction-img-right {
+    height: 75px;
+    border: 2px solid green;
 }
 
 .prediction-label {
