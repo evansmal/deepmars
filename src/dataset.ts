@@ -19,7 +19,8 @@ export class DatasetLoader {
     public testing_dataset: TensorDataset;
     public training_dataset: TensorDataset;
 
-    private on_ready_callback: () => void;
+    private on_ready_callback: { (): void; }[] = [];
+
 
     async downloadData() {
         console.log("Starting download...");
@@ -33,12 +34,12 @@ export class DatasetLoader {
         console.log(`Took ${t2 - t1} ms to get preprocess training data`);
 
         this.testing_dataset = await downloadAndPreprocess(raw.test);
-        this.on_ready_callback();
+        this.on_ready_callback.forEach(x => x());
         console.log("Done download!");
 
     }
 
     onDownloadComplete(callback: () => void) {
-        this.on_ready_callback = callback;
+        this.on_ready_callback.push(callback);
     }
 }

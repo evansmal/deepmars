@@ -1,0 +1,17 @@
+
+.builder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 5px;
+    row-gap: 1em;
+    width: 40%;
+}
+
+.builder-item {
+    justify-self: start;
+}
+
+body {
+    padding: 15px;
+    font-family: Roboto;
+}

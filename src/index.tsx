@@ -8,6 +8,8 @@ import { ModelTrainer } from "./components/ModelTrainer";
 
 import { DatasetLoader } from "./dataset";
 
+import "./components/Styling.css";
+
 const dataset = new DatasetLoader();
 dataset.downloadData();
 

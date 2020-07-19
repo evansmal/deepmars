@@ -177,10 +177,18 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
 
     return (
         <div>
-            <h2> Architecture Builder </h2>
-            <Conv2dBuilder onAddLayer={addConv} />
-            <MaxPoolingBuilder onAddLayer={addPool} />
-            <DenseBuilder onAddLayer={addDense} />
+            <h2> Model Designer </h2>
+            <div className="builder-grid">
+                <div className="builder-item">
+                    <Conv2dBuilder onAddLayer={addConv} />
+                </div>
+                <div className="builder-item">
+                    <MaxPoolingBuilder onAddLayer={addPool} />
+                </div>
+                <div className="builder-item">
+                    <DenseBuilder onAddLayer={addDense} />
+                </div>
+            </div>
 
             <br />
 
@@ -191,7 +199,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             <p>Number of layers: {model.length}</p>
             <button onClick={buildModel}>Confirm</button>
             <button onClick={removeLastLayer}>Remove</button>
-        </div>
+        </div >
     )
 
 }
