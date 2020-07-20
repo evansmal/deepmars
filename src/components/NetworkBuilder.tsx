@@ -161,6 +161,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
         }
 
         let last_layer = model[model.length - 1];
+        console.log(last_layer);
         if (last_layer.constructor.name == "Dense") {
             setModel([...model, tf.layers.dense({ units: units, activation: "relu" })]);
         } else {
