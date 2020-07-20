@@ -6,7 +6,6 @@ import * as React from "react";
 import { NetworkBuilder } from "./components/NetworkBuilder";
 import { ModelTrainer } from "./components/ModelTrainer";
 import { PredictionResults } from "./components/PredictionResults";
-import { ActivationBrowser } from "./components/ActivationBrowser";
 
 import { DatasetLoader } from "./dataset";
 
@@ -14,6 +13,8 @@ import "./components/Styling.css";
 
 const dataset = new DatasetLoader();
 dataset.downloadData();
+
+tf.enableProdMode();
 
 const App = () => {
 

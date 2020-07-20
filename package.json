@@ -26,6 +26,6 @@
         "@types/react-redux": "^7.1.9"
     },
     "browserslist": [
-        "last 2 Chrome versions"
+        "last 5 Chrome versions"
     ]
 }

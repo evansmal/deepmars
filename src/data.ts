@@ -1,10 +1,20 @@
 import * as tf from "@tensorflow/tfjs";
 
+async function promisifyLoad(image: HTMLImageElement, url: string) {
+    new Promise((resolve) => {
+        image.addEventListener("load", () => {
+            resolve(image);
+        });
+        image.src = url;
+    });
+}
+
 export async function convertToImageElement(buffer: ArrayBuffer): Promise<HTMLImageElement> {
     const blob = new Blob([buffer]);
     const image = new Image();
-    image.src = URL.createObjectURL(blob);
-    await image.decode();
+    const url = URL.createObjectURL(blob);
+    image.src = url;
+    await image.decode().catch(err => console.log(err));
     return image
 }
 
