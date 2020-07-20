@@ -160,9 +160,9 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return;
         }
 
-        let last_layer = model[model.length - 1];
-        console.log(last_layer);
-        if (last_layer.constructor.name == "Dense") {
+        let last_layer = model[model.length - 1]
+        console.log(last_layer.name);
+        if (last_layer.name.search("Dense") >= 0) {
             setModel([...model, tf.layers.dense({ units: units, activation: "relu" })]);
         } else {
             setModel([...model, tf.layers.flatten(), tf.layers.dense({ units: units, activation: "relu" })]);
@@ -180,7 +180,7 @@ export const NetworkBuilder = (props: NetworkBuilderProps) => {
             return
         }
         let last_layer = model[model.length - 1];
-        if (last_layer.constructor.name == "Dense") {
+        if (last_layer.name.search("Dense") >=0 ) {
             model.push(tf.layers.dense({ units: 3 }));
         } else {
             model.push(tf.layers.flatten(), tf.layers.dense({ units: 3, activation: "softmax" }));
