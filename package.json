@@ -11,7 +11,7 @@
     "dependencies": {
         "@tensorflow/tfjs": "^2.0.1",
         "@tensorflow/tfjs-vis": "^1.4.3",
-        "aws-sdk": "^2.715.0",
+        "aws-sdk": "^2.814.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-redux": "^7.2.0",
