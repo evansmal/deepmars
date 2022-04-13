@@ -1,6 +1,6 @@
 ![Banner](https://github.com/evansmal/deepmars/blob/master/assets/banner.png)
 
-A small web application that allows a user to train a convolutional neural network in the browser without any programming experience. 
+A small web application that allows a user to train a convolutional neural network on MER imagery in the browser without any programming experience. 
 
 ## Getting Started
 
